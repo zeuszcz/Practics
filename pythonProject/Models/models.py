@@ -1,10 +1,10 @@
 from sqlalchemy import Table, JSON, Column, MetaData, Integer, String, TIMESTAMP, ForeignKey
 
-metadata = MetaData()
+TableMetaData = MetaData()
 
 cart = Table(
     "cart",
-    metadata,
+    TableMetaData,
     Column("id", Integer, primary_key=True),
     Column("name", String, nullable=False),
     Column("sum", Integer)
@@ -12,7 +12,7 @@ cart = Table(
 
 service = Table(
     "service",
-    metadata,
+    TableMetaData,
     Column("id", Integer, primary_key=True),
     Column("cost", Integer, nullable=False),
     Column("name", String, nullable=False),
@@ -22,7 +22,7 @@ service = Table(
 
 product = Table(
     "product",
-    metadata,
+    TableMetaData,
     Column("id",Integer,primary_key=True),
     Column("cost",Integer,nullable=False),
     Column("name",String,nullable=False),
@@ -32,7 +32,7 @@ product = Table(
 
 cart_item = Table(
     "cart_item",
-    metadata,
+    TableMetaData,
     Column("id", Integer, primary_key=True),
     Column("cart_id", Integer,ForeignKey = "cart.id"),
     Column("product_id", Integer,ForeignKey="product.id"),
@@ -43,7 +43,7 @@ cart_item = Table(
 
 product_type = Table(
     "product_type",
-    metadata,
+    TableMetaData,
     Column("id",Integer,primary_key=True),
     Column("name",String,nullable=False),
 
@@ -51,7 +51,7 @@ product_type = Table(
 
 product_component = Table(
     "product_component",
-    metadata,
+    TableMetaData,
     Column("id",Integer,primary_key=True),
     Column("product_type_id",Integer,ForeignKey="product_type.id"),
     Column("name",String,nullable=False),
@@ -61,7 +61,7 @@ product_component = Table(
 
 build = Table(
     "build",
-    metadata,
+    TableMetaData,
     Column("id",Integer,primary_key=True),
     Column("product_id",Integer,ForeignKey = "product.id"),
     Column("product_component_id",Integer,ForeignKey="product_component.id"),
