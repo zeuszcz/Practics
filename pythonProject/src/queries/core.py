@@ -1,2 +1,2 @@
 from sqlalchemy import text
-from models.py import TableMetaData
+from C:\Users\zeusz\PycharmProjects\pythonProject\src\queries\models import TableMetaData
