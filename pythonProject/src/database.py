@@ -11,17 +11,15 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
 postgresql_url = 'postgresql://postgres:qw221057320@localhost:3110/postgres'
 
-# engine = create_engine(postgresql_url)
-#
-# session = sessionmaker(bind=engine)
+engine = create_engine(postgresql_url)
+Session = sessionmaker(bind=engine)
 
 
-engine = create_async_engine(postgresql_url)
-async_session_maker = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
-async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
-    async with async_session_maker() as session:
+
+def get_session():
+    with Session() as session:
         yield session
 
 

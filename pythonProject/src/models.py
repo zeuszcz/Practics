@@ -34,9 +34,9 @@ cart_item = Table(
     "cart_item",
     TableMetaData,
     Column("id", Integer, primary_key=True),
-    Column("cart_id", Integer,ForeignKey = "cart.id"),
-    Column("product_id", Integer,ForeignKey="product.id"),
-    Column("servece_id",Integer,ForeignKey="service.id"),
+    Column("cart_id", Integer,ForeignKey("cart.id")),
+    Column("product_id", Integer,ForeignKey("product.id")),
+    Column("servece_id",Integer,ForeignKey("service.id")),
 
 )
 
@@ -53,7 +53,7 @@ product_component = Table(
     "product_component",
     TableMetaData,
     Column("id",Integer,primary_key=True),
-    Column("product_type_id",Integer,ForeignKey="product_type.id"),
+    Column("product_type_id",Integer,ForeignKey("product_type.id")),
     Column("name",String,nullable=False),
     Column("cost",Integer,nullable=False),
 
@@ -63,8 +63,8 @@ build = Table(
     "build",
     TableMetaData,
     Column("id",Integer,primary_key=True),
-    Column("product_id",Integer,ForeignKey = "product.id"),
-    Column("product_component_id",Integer,ForeignKey="product_component.id"),
+    Column("product_id",Integer,ForeignKey("product.id")),
+    Column("product_component_id",Integer,ForeignKey("product_component.id")),
     Column("name",String,nullable=False),
 
 )
