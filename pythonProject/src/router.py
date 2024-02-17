@@ -13,12 +13,12 @@ router = APIRouter(
 
 
 @router.get("/")
-def get_cartcount():
+def get_cartcount(db: Session = Depends(get_session)):
     stmt = text("""
                     select COUNT( name)
                     from cart
                 """)
-    result = session.execute(stmt)
+    result = db.execute(stmt).scalar_one_or_none()
     return result
 # def get_specific_operations(session: get_session):
 #     query = select(cart).where(cart.id == 1)
