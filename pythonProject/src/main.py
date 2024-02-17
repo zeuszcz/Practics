@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 
-from router import router as router_cart
+from src.router import router as router_cart
 
 app = FastAPI(
     title="calculator"
