@@ -17,5 +17,5 @@ def get_product_name(db: Session = Depends(get_session)):
                     select  name
                     from product  
                 """)
-    result = db.execute(stmt).scalar_one_or_none()
+    result = db.execute(stmt).scalars().all()
     return result

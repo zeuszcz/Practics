@@ -28,7 +28,7 @@ def get_all_cart(db: Session = Depends(get_session)):
                     SELECT *
                     FROM cart
                 """)
-    result = db.execute(stmt).scalar_one_or_none()
+    result = db.execute(stmt).scalars().all()
     return result
 
 

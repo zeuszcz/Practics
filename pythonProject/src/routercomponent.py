@@ -18,7 +18,7 @@ def get_productcomponent_type(db: Session = Depends(get_session)):
                     inner join product_type
                     on product_type_id = product_type.id
                 """)
-    result = db.execute(stmt).scalar_one_or_none()
+    result = db.execute(stmt).scalars().all()
     return result
 
 @router.get("/ram")
@@ -28,7 +28,7 @@ def get_ram_component(db: Session = Depends(get_session)):
                     from product_component 
                     where product_type_id = 3
                 """)
-    result = db.execute(stmt).scalar_one_or_none()
+    result = db.execute(stmt).scalars().all()
     return result
 
 
@@ -39,7 +39,7 @@ def get_count_video_component(db: Session = Depends(get_session)):
                     from product_component 
                     where product_type_id = 2
                 """)
-    result = db.execute(stmt).scalar_one_or_none()
+    result = db.execute(stmt).scalars().all()
     return result
 
 @router.get("/all")
@@ -47,8 +47,8 @@ def get_ordered_component(db: Session = Depends(get_session)):
     stmt = text("""
                     select * from product_component order by cost
                 """)
-    result = db.execute(stmt).scalar_one_or_none()
-    return result@router.get("/")
+    result = db.execute(stmt).scalars().all()
+    return result
 
 @router.get("/count")
 def get_component_count(db: Session = Depends(get_session)):
@@ -59,8 +59,8 @@ def get_component_count(db: Session = Depends(get_session)):
                     on product_type_id = product_type.id
                     group by product_type.name
                 """)
-    result = db.execute(stmt).scalar_one_or_none()
-    return result@router.get("/")
+    result = db.execute(stmt).scalars().all()
+    return result
 
 
 
