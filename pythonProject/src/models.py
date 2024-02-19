@@ -1,4 +1,5 @@
 from sqlalchemy import Table, JSON, Column, MetaData, Integer, String, TIMESTAMP, ForeignKey
+from pydantic import BaseModel
 
 TableMetaData = MetaData()
 
@@ -10,6 +11,10 @@ cart = Table(
     Column("sum", Integer)
 )
 
+class CartCreate(BaseModel):
+    name: str
+    sum: int
+
 service = Table(
     "service",
     TableMetaData,
@@ -18,6 +23,10 @@ service = Table(
     Column("name", String, nullable=False),
 
 )
+class ServiceCreate(BaseModel):
+    id:int
+    cost: int
+    name: str
 
 
 product = Table(
@@ -29,6 +38,10 @@ product = Table(
 
 )
 
+class ProductCreate(BaseModel):
+    id:int
+    cost: int
+    name: str
 
 cart_item = Table(
     "cart_item",
@@ -40,6 +53,11 @@ cart_item = Table(
 
 )
 
+class CartItemCreate(BaseModel):
+    id:int
+    cart_id: int
+    product_id: int
+    service_id: int
 
 product_type = Table(
     "product_type",
@@ -48,6 +66,11 @@ product_type = Table(
     Column("name",String,nullable=False),
 
 )
+
+class ProductTypeCreate(BaseModel):
+    id:int
+    name: str
+
 
 product_component = Table(
     "product_component",
@@ -59,6 +82,12 @@ product_component = Table(
 
 )
 
+class ProductComponentCreate(BaseModel):
+    id:int
+    product_type_id:int
+    name: str
+    cost: int
+
 build = Table(
     "build",
     TableMetaData,
@@ -68,3 +97,9 @@ build = Table(
     Column("name",String,nullable=False),
 
 )
+
+class BuildCreate(BaseModel):
+    id:int
+    product_id:int
+    product_component_id:int
+    name: str
