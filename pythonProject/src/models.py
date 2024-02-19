@@ -1,4 +1,4 @@
-from sqlalchemy import Table, JSON, Column, MetaData, Integer, String, TIMESTAMP, ForeignKey
+from sqlalchemy import Table, Column, MetaData, Integer, String, ForeignKey
 from pydantic import BaseModel
 
 TableMetaData = MetaData()

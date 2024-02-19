@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy import select, insert, text, update,delete
-from sqlalchemy.ext.asyncio import AsyncSession
 from src.database import get_session, Session
-import sqlalchemy.orm
+
 
 from src.models import cart, CartCreate
 
@@ -38,14 +37,14 @@ def add_cart(new_cart: CartCreate,db: Session = Depends(get_session)):
     db.commit()
     return {"status": "complete"}
 
-@router.post("/update")
+@router.put("/update")
 def update_cart(old_name:str,new_name:str,new_sum: int,new_product_component: CartCreate,db: Session = Depends(get_session)):
     stmt = update(cart).where(cart.c.name == old_name).values(name = new_name, sum = new_sum)
     result = db.execute(stmt)
     db.commit()
     return {"status": "complete"}
 
-@router.post("/delete")
+@router.delete("/delete")
 def update_cart(old_name:str,db: Session = Depends(get_session)):
     stmt = delete(cart).where(cart.c.name == old_name)
     result = db.execute(stmt)
