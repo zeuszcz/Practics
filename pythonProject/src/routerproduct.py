@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import select, insert, text, update
+from sqlalchemy import select, insert, text, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.database import get_session, Session
 from src.models import ProductCreate, product
@@ -25,8 +25,15 @@ def add_product(new_product: ProductCreate,db: Session = Depends(get_session)):
     return {"status": "complete"}
 
 @router.post("/update")
-def update_product(old_name:str,new_name:str,new_cost: int,new_product_component: ProductCreate,db: Session = Depends(get_session)):
+def update_product(old_name:str,new_name:str,new_cost: int,db: Session = Depends(get_session)):
     stmt = update(product).where(product.c.name == old_name).values(name = new_name, cost = new_cost)
+    result = db.execute(stmt)
+    db.commit()
+    return {"status": "complete"}
+
+@router.post("/delete")
+def delete_product(old_name:str,db: Session = Depends(get_session)):
+    stmt = delete(product).where(product.c.name == old_name)
     result = db.execute(stmt)
     db.commit()
     return {"status": "complete"}
