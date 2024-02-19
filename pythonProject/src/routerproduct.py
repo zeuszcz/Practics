@@ -9,10 +9,7 @@ router = APIRouter(
 )
 @router.get("/name")
 def get_product_name(db: Session = Depends(get_session)):
-    stmt = text("""
-                    select  name
-                    from product  
-                """)
+    stmt = select(product.c.name)
     result = db.execute(stmt).scalars().all()
     return result
 

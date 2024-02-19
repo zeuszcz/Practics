@@ -12,21 +12,15 @@ router = APIRouter(
 
 @router.get("/count")
 def get_cart_item_count(db: Session = Depends(get_session)):
-    stmt = text("""
-                    select COUNT( name)
-                    from cart_item
-                """)
-    result = db.execute(stmt).scalar_one_or_none()
-    return result
+    stmt = db.query(cart_item).count()
+    return {"result":stmt}
 
 
 @router.get("/all")
 def get_all_cart_item(db: Session = Depends(get_session)):
-    stmt = text("""
-                    SELECT *
-                    FROM cart_item
-                """)
-    result = db.execute(stmt).scalars().all()
+    stmt = select(cart_item)
+    result = db.execute(stmt).all()
+    result = [row._asdict() for row in result]
     return result
 
 @router.post("/add")

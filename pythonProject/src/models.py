@@ -49,7 +49,7 @@ cart_item = Table(
     Column("id", Integer, primary_key=True),
     Column("cart_id", Integer,ForeignKey("cart.id")),
     Column("product_id", Integer,ForeignKey("product.id")),
-    Column("servece_id",Integer,ForeignKey("service.id")),
+    Column("service_id",Integer,ForeignKey("service.id")),
 
 )
 
