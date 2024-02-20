@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 
 
-from src.router import router as router_cart
-from src.routercomponent import router as router_component
-from src.routerproduct import router as router_product
-from src.router_cart_item import router as router_cart_item
-from src.router_service import router as router_service
+from src.routers.router_cart import router as router_cart
+from src.routers.routercomponent import router as router_component
+from src.routers.routerproduct import router as router_product
+from src.routers.router_cart_item import router as router_cart_item
+from src.routers.router_service import router as router_service
 
 app = FastAPI(
     title="calculator"

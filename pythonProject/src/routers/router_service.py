@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy import select, insert, text, update, delete
 from src.database import get_session, Session
-from src.models import ServiceCreate, service
+from src.schemas.schema_service import ServiceCreate
+from src.models import service
 
 router = APIRouter(
     prefix="/services",

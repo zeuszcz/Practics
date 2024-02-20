@@ -1,105 +1,66 @@
-from sqlalchemy import Table, Column, MetaData, Integer, String, ForeignKey
-from pydantic import BaseModel
-
-TableMetaData = MetaData()
-
-cart = Table(
-    "cart",
-    TableMetaData,
-    Column("id", Integer, primary_key=True),
-    Column("name", String, nullable=False),
-    Column("sum", Integer)
-)
-
-class CartCreate(BaseModel):
-    name: str
-    sum: int
-
-service = Table(
-    "service",
-    TableMetaData,
-    Column("id", Integer, primary_key=True),
-    Column("cost", Integer, nullable=False),
-    Column("name", String, nullable=False),
-
-)
-class ServiceCreate(BaseModel):
-    id:int
-    cost: int
-    name: str
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import mapped_column
+from sqlalchemy.orm import DeclarativeBase
 
 
-product = Table(
-    "product",
-    TableMetaData,
-    Column("id",Integer,primary_key=True),
-    Column("cost",Integer,nullable=False),
-    Column("name",String,nullable=False),
-
-)
-
-class ProductCreate(BaseModel):
-    id:int
-    cost: int
-    name: str
-
-cart_item = Table(
-    "cart_item",
-    TableMetaData,
-    Column("id", Integer, primary_key=True),
-    Column("cart_id", Integer,ForeignKey("cart.id")),
-    Column("product_id", Integer,ForeignKey("product.id")),
-    Column("service_id",Integer,ForeignKey("service.id")),
-
-)
-
-class CartItemCreate(BaseModel):
-    id:int
-    cart_id: int
-    product_id: int
-    service_id: int
-
-product_type = Table(
-    "product_type",
-    TableMetaData,
-    Column("id",Integer,primary_key=True),
-    Column("name",String,nullable=False),
-
-)
-
-class ProductTypeCreate(BaseModel):
-    id:int
-    name: str
+class Base(DeclarativeBase):
+    pass
 
 
-product_component = Table(
-    "product_component",
-    TableMetaData,
-    Column("id",Integer,primary_key=True),
-    Column("product_type_id",Integer,ForeignKey("product_type.id")),
-    Column("name",String,nullable=False),
-    Column("cost",Integer,nullable=False),
+class Cart(Base):
+    __tablename__ = "cart"
 
-)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    sum: Mapped[int]
 
-class ProductComponentCreate(BaseModel):
-    id:int
-    product_type_id:int
-    name: str
-    cost: int
 
-build = Table(
-    "build",
-    TableMetaData,
-    Column("id",Integer,primary_key=True),
-    Column("product_id",Integer,ForeignKey("product.id")),
-    Column("product_component_id",Integer,ForeignKey("product_component.id")),
-    Column("name",String,nullable=False),
+class Service(Base):
+    __tablename__ = "service"
 
-)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    cost: Mapped[int]
+    name: Mapped[str]
 
-class BuildCreate(BaseModel):
-    id:int
-    product_id:int
-    product_component_id:int
-    name: str
+
+class Product(Base):
+    __tablename__ = "product"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    cost: Mapped[int]
+    name: Mapped[str]
+
+
+class CartItem(Base):
+    __tablename__ = "cart_item"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    cart_id: Mapped[int] = mapped_column(ForeignKey("cart.id"))
+    product_id: Mapped[int] = mapped_column(ForeignKey("product.id"))
+    service_id: Mapped[int] = mapped_column(ForeignKey("service.id"))
+
+
+class ProductType(Base):
+    __tablename__ = "product_type"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+
+
+class ProductComponent(Base):
+    __tablename__ = "product_component"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    product_type_id: Mapped[int] = mapped_column(ForeignKey("product_type.id"))
+    name: Mapped[str]
+    cost: Mapped[int]
+
+
+class Build(Base):
+    __tablename__ = "build"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    product_id: Mapped[int] = mapped_column(ForeignKey("product.id"))
+    product_component_id: Mapped[int] = mapped_column(ForeignKey("product_component.id"))
+    name: Mapped[str]
