@@ -1,9 +1,6 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import select, insert, text, update, delete
 from src.database import get_session, Session
-
-from src.schemas.schema_build import BuildCreate
-from src.models import build
+from src.services.build_service import BuildService
 
 router = APIRouter(
     prefix="/builds",
@@ -12,40 +9,25 @@ router = APIRouter(
 
 
 @router.get("/count")
-def get_build_count(db: Session = Depends(get_session)):
-    stmt = db.query(build).count()
-    return {"result": stmt}
+def get_build_count(new_db: Session = Depends(get_session)):
+    return BuildService.get_build_count(db=new_db)
 
 
 @router.get("/all")
-def get_all_build(db: Session = Depends(get_session)):
-    stmt = select(build)
-    result = db.execute(stmt).all()
-    result = [row._asdict() for row in result]
-    return result
+def get_all_build(new_db: Session = Depends(get_session)):
+    return BuildService.get_all_build(db=new_db)
 
 
 @router.post("/add")
-def add_build(new_build: BuildCreate, db: Session = Depends(get_session)):
-    stmt = insert(build).values(**new_build.dict())
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def add_build(oldname: str, newname: str, newproduct_id: int, newproduct_component_id: int, new_db: Session = Depends(get_session)):
+    return BuildService.add_build(old_name=oldname,new_name=newname,new_product_id=newproduct_id,new_product_component_id=newproduct_component_id,db=new_db)
 
 
 @router.put("/update")
-def update_build(old_name: str, new_name: str, new_product_id: int, new_product_component_id: int, new_service_id: int,
-                db: Session = Depends(get_session)):
-    stmt = update(build).where(build.c.name == old_name).values(name=new_name, product_id=new_product_id,
-                                                                        product_component_id=new_product_component_id)
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def update_build(oldname: str, newname: str, newproduct_id: int, newproduct_component_id: int, new_db: Session = Depends(get_session)):
+    return BuildService.update_build(old_name=oldname,new_name=newname,new_product_id=newproduct_id,new_product_component_id=newproduct_component_id,db=new_db)
 
 
 @router.delete("/delete")
-def update_build(old_name: str, db: Session = Depends(get_session)):
-    stmt = delete(build).where(build.c.name == old_name)
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def delete_build(oldname: str, new_db:Session = Depends(get_session)):
+    return BuildService.delete_build(old_name=oldname,db=new_db)

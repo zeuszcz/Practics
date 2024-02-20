@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import select, insert, text, update, delete
 from src.database import get_session, Session
-from src.schemas.schema_product_type import ProductTypeCreate
-from src.models import product_type
+from src.services.product_type_service import ProductTypeService
+
 
 router = APIRouter(
     prefix="/product_types",
@@ -11,31 +10,20 @@ router = APIRouter(
 
 
 @router.get("/name")
-def get_product_type_name(db: Session = Depends(get_session)):
-    stmt = select(product_type)
-    result = db.execute(stmt).scalars().all()
-    return result
+def get_product_type_name(new_db: Session = Depends(get_session)):
+    return ProductTypeService.get_product_type_name(db=new_db)
 
 
 @router.post("/add")
-def add_product_type(new_service: ProductTypeCreate, db: Session = Depends(get_session)):
-    stmt = insert(product_type).values(**new_service.dict())
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def add_product_type(newname: str, new_db: Session = Depends(get_session)):
+    return ProductTypeService.add_product_type(new_name=newname, db=new_db)
 
 
 @router.put("/update")
-def update_product_type(old_name: str, new_name: str, db: Session = Depends(get_session)):
-    stmt = update(product_type).where(product_type.c.name == old_name).values(name=new_name)
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def update_product_type(oldname: str, newname: str, new_db: Session = Depends(get_session)):
+    return ProductTypeService.update_product_type(old_name=oldname, new_name=newname, db=new_db)
 
 
 @router.delete("/delete")
-def delete_product_type(old_name: str, db: Session = Depends(get_session)):
-    stmt = delete(product_type).where(product_type.c.name == old_name)
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def delete_product_type(oldname: str, new_db: Session = Depends(get_session)):
+    return ProductTypeService.delete_product_type(old_name=oldname, db=new_db)

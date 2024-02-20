@@ -1,8 +1,6 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import select, insert, text, update, delete
 from src.database import get_session, Session
-from src.schemas.schema_product import ProductCreate
-from src.models import product
+from src.services.product_service import ProductService
 
 router = APIRouter(
     prefix="/product",
@@ -11,31 +9,20 @@ router = APIRouter(
 
 
 @router.get("/name")
-def get_product_name(db: Session = Depends(get_session)):
-    stmt = select(product.c.name)
-    result = db.execute(stmt).scalars().all()
-    return result
+def get_product_name(new_db: Session = Depends(get_session)):
+    return ProductService.get_product_name(db=new_db)
 
 
 @router.post("/add")
-def add_product(new_product: ProductCreate, db: Session = Depends(get_session)):
-    stmt = insert(product).values(**new_product.dict())
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def add_product(newcost:int,newname:str, new_db: Session = Depends(get_session)):
+    return ProductService.add_product(new_cost=newcost,new_name=newname,db=new_db)
 
 
 @router.put("/update")
-def update_product(old_name: str, new_name: str, new_cost: int, db: Session = Depends(get_session)):
-    stmt = update(product).where(product.c.name == old_name).values(name=new_name, cost=new_cost)
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def update_product(oldname: str, newname: str, newcost: int, new_db: Session = Depends(get_session)):
+    return ProductService.update_product(old_name=oldname,new_name=newname,new_cost=newcost,db=new_db)
 
 
 @router.delete("/delete")
-def delete_product(old_name: str, db: Session = Depends(get_session)):
-    stmt = delete(product).where(product.c.name == old_name)
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def delete_product(oldname: str, new_db: Session = Depends(get_session)):
+    return ProductService.delete_product(old_name=oldname,db=new_db)

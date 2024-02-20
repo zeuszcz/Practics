@@ -1,9 +1,7 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import select, insert, text, update, delete
 from src.database import get_session, Session
+from src.services.cart_item_service import CartItemService
 
-from src.schemas.schema_cart_item import CartItemCreate
-from src.models import cart_item
 
 router = APIRouter(
     prefix="/cart_items",
@@ -12,40 +10,26 @@ router = APIRouter(
 
 
 @router.get("/count")
-def get_cart_item_count(db: Session = Depends(get_session)):
-    stmt = db.query(cart_item).count()
-    return {"result": stmt}
+def get_cart_item_count(new_db: Session = Depends(get_session)):
+    return CartItemService.get_cart_item_count(db=new_db)
 
 
 @router.get("/all")
-def get_all_cart_item(db: Session = Depends(get_session)):
-    stmt = select(cart_item)
-    result = db.execute(stmt).all()
-    result = [row._asdict() for row in result]
-    return result
+def get_all_cart_item(new_db: Session = Depends(get_session)):
+    return CartItemService.get_all_cart_item(db=new_db)
 
 
 @router.post("/add")
-def add_cart(new_cart_item: CartItemCreate, db: Session = Depends(get_session)):
-    stmt = insert(cart_item).values(**new_cart_item.dict())
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def add_cart_item(newSI:int,newPI:int,newCI:int, new_db: Session = Depends(get_session)):
+    return CartItemService.add_cart_item(new_SI=newSI,new_PI=newPI,new_CI=newCI,db=new_db)
 
 
 @router.put("/update")
-def update_cart(old_name: str, new_name: str, new_product_id: int, new_cart_id: int, new_service_id: int,
-                db: Session = Depends(get_session)):
-    stmt = update(cart_item).where(cart_item.c.name == old_name).values(name=new_name, product_id=new_product_id,
-                                                                        cart_id=new_cart_id, service_id=new_service_id)
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def update_cart_item(oldCI: int, product_id: int, cart_id: int, service_id: int,
+                new_db: Session = Depends(get_session)):
+    return CartItemService.update_cart_item(CI=oldCI,new_product_id=product_id,new_cart_id=cart_id,new_service_id=service_id,db=new_db)
 
 
 @router.delete("/delete")
-def update_cart(old_name: str, db: Session = Depends(get_session)):
-    stmt = delete(cart_item).where(cart_item.c.name == old_name)
-    result = db.execute(stmt)
-    db.commit()
-    return {"status": "complete"}
+def delete_cart_item(cart_id: int, new_db: Session = Depends(get_session)):
+    return CartItemService.delete_cart_item(CI=cart_id,db=new_db)
