@@ -2,8 +2,8 @@ from fastapi import FastAPI
 
 
 from src.routers.router_cart import router as router_cart
-from src.routers.routercomponent import router as router_component
-from src.routers.routerproduct import router as router_product
+from src.routers.router_component import router as router_component
+from src.routers.router_product import router as router_product
 from src.routers.router_cart_item import router as router_cart_item
 from src.routers.router_service import router as router_service
 from src.routers.router_product_type import router as router_product_type
