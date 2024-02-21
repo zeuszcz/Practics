@@ -1,5 +1,5 @@
 from src.models import Cart
-from src.schemas.schema_cart import CartCreate
+from src.schemas.schema_cart import CartUpdate,CartRead
 from sqlalchemy import select, insert, update, delete
 
 
@@ -25,9 +25,8 @@ class CartService:
         return {"status": "complete"}
 
     @staticmethod
-    def update_cart(old_name: str, new_name: str, new_sum: int, new_product_component: CartCreate,
-                    db):
-        stmt = update(Cart).where(Cart.name == old_name).values(name=new_name, sum=new_sum)
+    def update_cart(new_cart,old_name,db):
+        stmt = update(Cart).where(CartUpdate.name == old_name).values(**new_cart.dict())
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}

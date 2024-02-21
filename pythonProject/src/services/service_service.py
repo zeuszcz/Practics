@@ -13,16 +13,16 @@ class ServiceService:
 
     @staticmethod
 
-    def add_service(new_name: str, new_cost: int, db):
-        stmt = insert(Service).values(name=new_name, cost=new_cost)
+    def add_service(new_service, db):
+        stmt = insert(Service).values(**new_service.dict())
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}
 
     @staticmethod
 
-    def update_service(old_name: str, new_name: str, new_cost: int, db):
-        stmt = update(Service).where(Service.name == old_name).values(name=new_name, cost=new_cost)
+    def update_service(old_name: str, new_service, db):
+        stmt = update(Service).where(Service.name == old_name).values(**new_service.dict())
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}

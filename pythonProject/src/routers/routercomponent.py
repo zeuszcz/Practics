@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from src.database import get_session, Session
 from src.services.component_service import ComponentService
+from src.schemas.schema_component import ComponentCreate,ComponentUpdate
 
 router = APIRouter(
     prefix="/productcomponent",
@@ -23,13 +24,13 @@ def get_ordered_component(new_db: Session = Depends(get_session)):
 
 
 @router.post("/add")
-def add_product_component(new_pti:int,newname:str,newcost:int, new_db: Session = Depends(get_session)):
-    return ComponentService.add_product_component(pti=new_pti,new_name=newname,new_cost=newcost,db=new_db)
+def add_product_component(newcomponent:ComponentCreate, new_db: Session = Depends(get_session)):
+    return ComponentService.add_product_component(new_component=newcomponent,db=new_db)
 
 
 @router.put("/update")
-def update_product_component(oldname: str, new_pti:int,newname:str,newcost:int, new_db: Session = Depends(get_session)):
-    return ComponentService.update_product_component(old_name=oldname,pti=new_pti,new_name=newname,new_cost=newcost,db=new_db)
+def update_product_component(oldname: str,newcomponent:ComponentCreate, new_db: Session = Depends(get_session)):
+    return ComponentService.update_product_component(old_name=oldname,new_component=newcomponent,db=new_db)
 
 
 @router.delete("/delete")

@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from src.database import get_session, Session
 from src.services.service_service import ServiceService
+from src.schemas.schema_service import ServiceCreate,ServiceUpdate
 
 router = APIRouter(
     prefix="/services",
@@ -14,13 +15,13 @@ def get_service_name(new_db: Session = Depends(get_session)):
 
 
 @router.post("/add")
-def add_service(newname:str,newcost:int, new_db: Session = Depends(get_session)):
-    return ServiceService.add_service(new_name = newname,new_cost=newcost,db=new_db)
+def add_service(newservice:ServiceCreate, new_db: Session = Depends(get_session)):
+    return ServiceService.add_service(new_service=newservice,db=new_db)
 
 
 @router.put("/update")
-def update_service(oldname: str, newname: str, newcost: int, new_db: Session = Depends(get_session)):
-    return ServiceService.update_service(old_name=oldname,new_name=newname,new_cost=newcost,db=new_db)
+def update_service(oldname: str,newservice:ServiceUpdate, new_db: Session = Depends(get_session)):
+    return ServiceService.update_service(old_name=oldname,new_service=newservice,db=new_db)
 
 
 @router.delete("/delete")

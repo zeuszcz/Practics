@@ -18,19 +18,15 @@ class BuildService:
         return result
 
     @staticmethod
-    def add_build(old_name: str, new_name: str, new_product_id: int, new_product_component_id: int,
-                  db):
-        stmt = insert(Build).values(name=new_name, product_id=new_product_id,
-                                    product_component_id=new_product_component_id)
+    def add_build(new_build,db):
+        stmt = insert(Build).values(**new_build.dict())
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}
 
     @staticmethod
-    def update_build(old_name: str, new_name: str, new_product_id: int, new_product_component_id: int,
-                     db):
-        stmt = update(Build).where(Build.name == old_name).values(name=new_name, product_id=new_product_id,
-                                                                  product_component_id=new_product_component_id)
+    def update_build(old_name: str, new_build,db):
+        stmt = update(Build).where(Build.name == old_name).values(**new_build.dict())
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}

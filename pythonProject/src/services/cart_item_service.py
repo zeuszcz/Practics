@@ -18,24 +18,22 @@ class CartItemService:
         return result
 
     @staticmethod
-    def add_cart_item(new_SI: int, new_PI: int, new_CI: int, db):
-        stmt = insert(CartItem).values(product_id=new_PI, cart_id=new_CI, service_id=new_SI)
+    def add_cart_item(new_cart_item, db):
+        stmt = insert(CartItem).values(**new_cart_item.dict())
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}
 
     @staticmethod
-    def update_cart_item(CI: int, new_product_id: int, new_cart_id: int, new_service_id: int,
-                         db):
-        stmt = update(CartItem).where(CartItem.cart_id == CI).values(product_id=new_product_id,
-                                                                     cart_id=new_cart_id, service_id=new_service_id)
+    def update_cart_item(CI: int, new_cart_item,db):
+        stmt = update(CartItem).where(CartItem.cart_id == CI).values(**new_cart_item.dict())
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}
 
     @staticmethod
-    def delete_cart_item(CI: int, db):
-        stmt = delete(CartItem).where(CartItem.cart_id == CI)
+    def delete_cart_item(cartid: int, db):
+        stmt = delete(CartItem).where(CartItem.cart_id == cartid)
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}

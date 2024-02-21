@@ -12,15 +12,15 @@ class ProductService:
         return result
 
     @staticmethod
-    def add_product(new_cost: int, new_name: str, db):
-        stmt = insert(Product).values(cost=new_cost, name=new_name)
+    def add_product(new_product, db):
+        stmt = insert(Product).values(**new_product.dict())
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}
 
     @staticmethod
-    def update_product(old_name: str, new_name: str, new_cost: int, db):
-        stmt = update(Product).where(Product.name == old_name).values(name=new_name, cost=new_cost)
+    def update_product(old_name: str,new_product, db):
+        stmt = update(Product).where(Product.name == old_name).values(**new_product.dict())
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}

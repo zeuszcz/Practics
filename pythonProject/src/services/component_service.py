@@ -1,5 +1,5 @@
 from src.models import ProductComponent
-from src.schemas.schema_component import ProductComponentCreate
+from src.schemas.schema_component import ComponentCreate
 from sqlalchemy import select, insert, update, delete
 
 
@@ -25,17 +25,15 @@ class ComponentService:
         return result
 
     @staticmethod
-    def add_product_component(pti: int, new_name: str, new_cost: int, db):
-        stmt = insert(ProductComponent).values(product_type_id=pti, name=new_name, cost=new_cost)
+    def add_product_component(new_component, db):
+        stmt = insert(ProductComponent).values(**new_component.dict())
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}
 
     @staticmethod
-    def update_product_component(old_name: str, pti: int, new_name: str, new_cost: int,
-                                 db):
-        stmt = update(ProductComponent).where(ProductComponent.name == old_name).values(product_type_id=pti,
-                                                                                        name=new_name, cost=new_cost)
+    def update_product_component(old_name: str, new_component, db):
+        stmt = update(ProductComponent).where(ProductComponent.name == old_name).values(**new_component.dict())
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}

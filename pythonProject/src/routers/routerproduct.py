@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from src.database import get_session, Session
 from src.services.product_service import ProductService
+from src.schemas.schema_product import ProductCreate,ProductUpdate
 
 router = APIRouter(
     prefix="/product",
@@ -14,13 +15,13 @@ def get_product_name(new_db: Session = Depends(get_session)):
 
 
 @router.post("/add")
-def add_product(newcost:int,newname:str, new_db: Session = Depends(get_session)):
-    return ProductService.add_product(new_cost=newcost,new_name=newname,db=new_db)
+def add_product(newproduct:ProductCreate, new_db: Session = Depends(get_session)):
+    return ProductService.add_product(new_product=newproduct,db=new_db)
 
 
 @router.put("/update")
-def update_product(oldname: str, newname: str, newcost: int, new_db: Session = Depends(get_session)):
-    return ProductService.update_product(old_name=oldname,new_name=newname,new_cost=newcost,db=new_db)
+def update_product(oldname: str, newproduct:ProductUpdate, new_db: Session = Depends(get_session)):
+    return ProductService.update_product(old_name=oldname,new_product=newproduct,db=new_db)
 
 
 @router.delete("/delete")

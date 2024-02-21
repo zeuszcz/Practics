@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 from src.database import get_session, Session
 from src.services.product_type_service import ProductTypeService
+from src.schemas.schema_product_type import ProductTypeCreate,ProductTypeUpdate
 
 
 router = APIRouter(
@@ -15,13 +16,13 @@ def get_product_type_name(new_db: Session = Depends(get_session)):
 
 
 @router.post("/add")
-def add_product_type(newname: str, new_db: Session = Depends(get_session)):
-    return ProductTypeService.add_product_type(new_name=newname, db=new_db)
+def add_product_type(newproducttype: ProductTypeCreate, new_db: Session = Depends(get_session)):
+    return ProductTypeService.add_product_type(new_product_type=newproducttype,db=new_db)
 
 
 @router.put("/update")
-def update_product_type(oldname: str, newname: str, new_db: Session = Depends(get_session)):
-    return ProductTypeService.update_product_type(old_name=oldname, new_name=newname, db=new_db)
+def update_product_type(oldname: str, newproducttype: ProductTypeUpdate, new_db: Session = Depends(get_session)):
+    return ProductTypeService.update_product_type(old_name=oldname,new_product_type=newproducttype,db=new_db)
 
 
 @router.delete("/delete")
