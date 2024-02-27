@@ -41,7 +41,7 @@ def deletete_cart(oldname: str, new_db: Session = Depends(get_session)):
 
 
 @router.post("/sum")
-def update_sum (product_cost: int,service_cost: int,new_db: Session = Depends(get_session))
-    return CartService.update_sum
+def update_sum (cart_id,new_db: Session = Depends(get_session)):
+    return CartService.calculate_cart_cost(cartid=cart_id,db = new_db)
 
 
