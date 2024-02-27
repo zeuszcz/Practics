@@ -34,3 +34,5 @@ def update_cart_item(oldCI: int,newcartitem:CartItemUpdate,
 @router.delete("/delete")
 def delete_cart_item(cart_id: int, new_db: Session = Depends(get_session)):
     return CartItemService.delete_cart_item(CI=cart_id,db=new_db)
+
+

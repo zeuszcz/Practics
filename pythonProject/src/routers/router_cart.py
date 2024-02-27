@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends
+from sqlalchemy import insert
+
 from src.database import get_session, Session
 from src.services.cart_service import CartService
-
+from src.models import Product,Service
 from src.schemas.schema_cart import CartCreate,CartUpdate
-from src.models import Cart
+from src.models import Cart, Product, Service
 
 router = APIRouter(
     prefix="/carts",
@@ -33,6 +35,13 @@ def update_cart(oldname: str, newcart: CartUpdate,new_db: Session = Depends(get_
 
 
 @router.delete("/delete")
-def update_cart(oldname: str, new_db: Session = Depends(get_session)):
+def deletete_cart(oldname: str, new_db: Session = Depends(get_session)):
     return CartService.delete_cart(old_name=oldname,db=new_db)
+
+
+
+@router.post("/sum")
+def update_sum (product_cost: int,service_cost: int,new_db: Session = Depends(get_session))
+    return CartService.update_sum
+
 

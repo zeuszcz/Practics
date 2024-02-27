@@ -1,12 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 import os
-
-database_url = 'postgresql://postgres:qw221057320@localhost:3110/postgres'
-
+from src.config import DB_URL
 
 
-engine = create_engine(database_url)
+
+
+
+engine = create_engine(DB_URL)
 Session = sessionmaker(bind=engine)
 
 

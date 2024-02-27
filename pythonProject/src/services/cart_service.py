@@ -1,4 +1,4 @@
-from src.models import Cart
+from src.models import Cart,Product,Service
 from src.schemas.schema_cart import CartUpdate,CartRead
 from sqlalchemy import select, insert, update, delete
 
@@ -34,6 +34,13 @@ class CartService:
     @staticmethod
     def delete_cart(old_name: str, db):
         stmt = delete(Cart).where(Cart.name == old_name)
+        result = db.execute(stmt)
+        db.commit()
+        return {"status": "complete"}
+
+
+    def calculate_cart_cost(cartid: int, db):
+        stmt = insert(Cart).values(Cart.sum == Product.cost)
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}

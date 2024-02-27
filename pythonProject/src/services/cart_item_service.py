@@ -1,4 +1,4 @@
-from src.models import CartItem
+from src.models import CartItem, Cart
 from src.schemas.schema_cart_item import CartItemCreate
 from sqlalchemy import select, insert, update, delete
 
@@ -37,3 +37,4 @@ class CartItemService:
         result = db.execute(stmt)
         db.commit()
         return {"status": "complete"}
+

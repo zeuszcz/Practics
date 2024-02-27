@@ -8,10 +8,13 @@ from src.routers.router_cart_item import router as router_cart_item
 from src.routers.router_service import router as router_service
 from src.routers.router_product_type import router as router_product_type
 from src.routers.router_build import router as router_build
+from dotenv import load_dotenv
+
 
 app = FastAPI(
     title="calculator"
 )
+
 
 
 app.include_router(router_cart)
