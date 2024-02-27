@@ -39,7 +39,7 @@ class CartService:
         return {"status": "complete"}
 
 
-    def calculate_cart_cost(cartid: int, db):
+    def calculate_cart_cost(cart_id: int, db):
         getproduct = select(Product.cost).where(Cart.id == CartItem.cart_id)
         getservice = select(Service.cost).where(Cart.id == CartItem.cart_id)
         res = db.execute(getproduct)
