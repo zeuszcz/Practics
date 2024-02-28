@@ -40,8 +40,19 @@ def deletete_cart(oldname: str, new_db: Session = Depends(get_session)):
 
 
 
-@router.post("/sum")
-def update_sum (cart_id,new_db: Session = Depends(get_session)):
-    return CartService.calculate_cart_cost(cartid=cart_id,db = new_db)
+@router.put("/add/product")
+def add_product (cartid: int,productid:int,new_db: Session = Depends(get_session)):
+    return CartService.add_product_to_cart(cart_id=cartid,product_id=productid,db = new_db)
 
+@router.put("/add/service")
+def add_service (cartid: int,serviceid:int,new_db: Session = Depends(get_session)):
+    return CartService.add_service_to_cart(cart_id=cartid,service_id=serviceid,db = new_db)
+
+@router.delete("/delete/service")
+def delete_service (cartid: int,serviceid:int,new_db: Session = Depends(get_session)):
+    return CartService.delete_service_from_cart(cart_id=cartid,service_id=serviceid,db = new_db)
+
+@router.delete("/delete/product")
+def delete_product (cartid: int,productid:int,new_db: Session = Depends(get_session)):
+    return CartService.delete_product_from_cart(cart_id=cartid,product_id=productid,db = new_db)
 
